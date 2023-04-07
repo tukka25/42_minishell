@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_dollar_han.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mradwan <mradwan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 17:11:33 by mradwan           #+#    #+#             */
-/*   Updated: 2023/03/13 16:19:01 by mradwan          ###   ########.fr       */
+/*   Updated: 2023/04/07 04:13:31 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ int	generate_string(char **str, char **tmp, t_vars *var, t_pipe *pipe)
 		{
 			*str = storing(*str, var->i - var->len - 1, var->len + 1, "");
 			var->i -= var->len + 1;
+			g_exit_code = 127;
 		}
 		free(*tmp);
 		return (1);

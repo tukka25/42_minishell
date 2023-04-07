@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 18:03:59 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/05 23:25:03 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:40:41 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,10 @@ void	free_and_exit(t_pipe *c, t_cmds *p)
 	if (c->m_path != NULL)
 		free_strings(c->m_path);
 	free_all(c, p);
-	// printf("g = %d\n", g_exit_code);
-	// closing_fds(c);
 	check_and_exit(c);
 	close(c->fdin);
 	close(c->fdout);
+	// printf("g = %d\n", g_exit_code);
 	exit(g_exit_code);
 }
 

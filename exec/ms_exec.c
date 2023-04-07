@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 19:40:39 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 01:07:12 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:43:30 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	check_other(t_cmds *p, t_pipe *c)
 		normal_exec(p, c);
 	else if (p->cmd_len > 1)
 		multiple_pipes(p, c);
+	
 	if (c->m_path)
 	{
 		free_strings(c->m_path);

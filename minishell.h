@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 21:51:56 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/06 06:21:31 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/07 03:53:00 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_vars
 	int		i;
 	int		j;
 	int		h;
+	int		d;
 	int		empty;
 	int		space_found;
 	int		quote_char;
@@ -201,7 +202,7 @@ int		builtins_pipes(t_cmds *p, t_pipe *c, int fd, int j);
 void	update_pwd(t_pipe *c, char *str, char *p, int k);
 void	update_export(t_pipe *c, char *str, char *p, int k);
 int		input_check(t_cmds *p, t_pipe *c, int j);
-int		output_check(t_cmds *p, t_pipe *c);
+int		output_check(t_cmds *p, t_pipe *c, int j);
 void	exit_once(t_cmds *p, t_pipe *c);
 void	ft_echo_p(t_cmds *p, int x, int pm, t_pipe *c);
 void	ft_unset_p(t_cmds *p, int i, int fd, t_pipe *c);

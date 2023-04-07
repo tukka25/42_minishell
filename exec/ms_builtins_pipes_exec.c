@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 21:23:49 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 04:43:53 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:45:50 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ void	ft_echo_p(t_cmds *p, int x, int pm, t_pipe *c)
 	int y;
 
 	y = 1;
+	g_exit_code = 0;
 	(void)pm;
-	if (!p[x].cmd[y] || !p[x].cmd[y][0])
+	if ((!p[x].cmd[y] || !p[x].cmd[y][0]) && p->red_len == 0)
 		write (1, "\n", 1);
 	else if (check_for_flag(p[x].cmd[y]) && !p[x].cmd[y - 1][4])
 		echo_new_line(p, x, y, c);
 	else if (check_for_flag(p[x].cmd[y]) == 0)
 		echo_flag(p, x, y, c);
-	// g_exit_code = 0;
 }
 
 void	ft_pwd_p(t_cmds *p, t_pipe *c, int pm)

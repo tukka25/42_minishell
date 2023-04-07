@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 01:18:17 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/03 23:53:36 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/07 01:50:44 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,9 @@ void	echo_new_line(t_cmds *p, int x, int y, t_pipe *c)
 	(void)c;
 	while (p[x].cmd[y])
 	{
-		// if (p[x].red_len == 0)
-		// {
-			printf("%s", p[x].cmd[y]);
-			if (p[x].cmd[y + 1])
-				printf(" ");
-		// }
-		// else
-		// {
-		// 	write_in_fd(p, x, y, c);
-		// 	write(c->fd1, "\n", 1);
-		// 	close(c->fd1);
-		// 	return ;
-		// }
+		printf("%s", p[x].cmd[y]);
+		if (p[x].cmd[y + 1])
+			printf(" ");
 		y++;
 	}
 	printf("\n");
@@ -97,13 +87,6 @@ void	echo_flag(t_cmds *p, int x, int y, t_pipe *c)
 		printf("%s ", p[x].cmd[y]);
 		y++;
 	}
-	// if (c->fd1 > 2)
-	// {
-	// 	write_in_fd(p, x, y, c);
-	// 	close(c->fd1);
-	// 	return ;
-	// }
-	// else
 	printf("%s", p[x].cmd[y]);
 }
 

@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 20:27:44 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 04:44:18 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/07 05:44:25 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_echo(t_cmds *p, int x, int pm, t_pipe *c)
 
 	y = 1;
 	(void)pm;
+	g_exit_code = 0;
 	if (p->red_len > 0 && pm != 1)
 		if (check_exec_redirect(p, c, 0, x) < 0)
 			return ;
@@ -35,7 +36,6 @@ void	ft_echo(t_cmds *p, int x, int pm, t_pipe *c)
 		echo_new_line(p, x, y, c);
 	else if (check_for_flag(p[x].cmd[y]) == 0)
 		echo_flag(p, x, y, c);
-	// g_exit_code = 0;
 }
 
 void	ft_pwd(t_cmds *p, t_pipe *c, int pm)
@@ -84,7 +84,7 @@ void	ft_cd(t_cmds *p, int x, int pm, t_pipe *c)
 	update_export(c, getcwd(NULL, 1024), "OLDPWD", 1);
 	if (chdir(p[x].cmd[y]) < 0)
 	{
-		printf("%s: No such file or directory\n", p[x].cmd[y]);
+		perror("cd");
 		g_exit_code = 1;
 	}
 	else
