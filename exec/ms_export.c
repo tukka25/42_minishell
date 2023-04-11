@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:04:59 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 05:52:38 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/11 04:04:01 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,31 @@ int	check_for_equal(t_cmds *p, int i, int j)
 
 void	changing_the_value(t_cmds *p, int i, int j, t_pipe *c)
 {
-	int		k;
-	t_list	*tmp;
-	t_list	*tmp2;
-	t_list	*tmp3;
-
-	k = 0;
-	tmp = c->m_export;
-	tmp2 = tmp;
-	tmp3 = NULL;
-	while (tmp)
+	c->k = 0;
+	c->tmpp = c->m_export;
+	c->tmp2 = c->tmpp;
+	c->tmp3 = NULL;
+	while (c->tmpp)
 	{
-		if (strncmp_orginal(tmp->content, p[i].cmd[j],
+		if (strncmp_orginal(c->tmpp->content, p[i].cmd[j],
 				len_till_equal(p[i].cmd[j])) == 0)
 		{
-			tmp3 = ft_lstnew(ft_strdup(p[i].cmd[j]));
-			tmp3->next = tmp->next;
-			if (tmp2->content != tmp->content)
-				tmp2->next = tmp3;
+			c->tmp3 = ft_lstnew(ft_strdup(p[i].cmd[j]));
+			c->tmp3->next = c->tmpp->next;
+			if (c->tmp2->content != c->tmpp->content)
+				c->tmp2->next = c->tmp3;
 			break ;
 		}
-		tmp2 = tmp;
-		tmp = tmp->next;
-		k++;
+		c->tmp2 = c->tmpp;
+		c->tmpp = c->tmpp->next;
+		c->k++;
 	}
-	if (tmp2->content != tmp->content)
-		tmp2->next = tmp3;
-	free(tmp->content);
-	free(tmp);
-	if (k == 0)
-		c->m_export = tmp3;
+	if (c->tmp2->content != c->tmpp->content)
+		c->tmp2->next = c->tmp3;
+	free(c->tmpp->content);
+	free(c->tmpp);
+	if (c->k == 0)
+		c->m_export = c->tmp3;
 }
 
 char	*env_index(int index, t_list *env)
@@ -80,61 +75,58 @@ char	*env_index(int index, t_list *env)
 
 void	changing_the_env_v(t_cmds *p, int i, int j, t_pipe *c)
 {
-	int		k;
-	t_list	*tmp;
-	t_list	*tmp2;
-	t_list	*tmp3;
-
-	k = 0;
-	tmp = c->m_env;
-	tmp2 = tmp;
-	tmp3 = NULL;
-	while (tmp)
+	c->k = 0;
+	c->tmpp = c->m_env;
+	c->tmp2 = c->tmpp;
+	c->tmp3 = NULL;
+	while (c->tmpp)
 	{
-		if (strncmp_orginal(tmp->content, p[i].cmd[j],
+		if (strncmp_orginal(c->tmpp->content, p[i].cmd[j],
 				len_till_equal(p[i].cmd[j])) == 0)
 		{
-			tmp3 = ft_lstnew(ft_strdup(p[i].cmd[j]));
-			tmp3->next = tmp->next;
-			if (tmp2->content != tmp->content)
-				tmp2->next = tmp3;
+			c->tmp3 = ft_lstnew(ft_strdup(p[i].cmd[j]));
+			c->tmp3->next = c->tmpp->next;
+			if (c->tmp2->content != c->tmpp->content)
+				c->tmp2->next = c->tmp3;
 			break ;
 		}
-		tmp2 = tmp;
-		tmp = tmp->next;
-		k++;
+		c->tmp2 = c->tmpp;
+		c->tmpp = c->tmpp->next;
+		c->k++;
 	}
-	if (tmp2->content != tmp->content)
-		tmp2->next = tmp3;
-	if (tmp)
-	{
-		free(tmp->content);
-		free(tmp);
-		tmp = NULL;
-	}
-	if (k == 0)
-		c->m_export = tmp3;
+	if (c->tmp2->content != c->tmpp->content)
+		c->tmp2->next = c->tmp3;
+	// if (c->tmpp)
+	// {
+	// 	free(c->tmpp->content);
+	// 	free(c->tmpp);
+	// }
+	if (c->k == 0)
+		c->m_export = c->tmp3;
 }
 
-void	unset_cmp(t_list *lst, char *str)
+void	unset_cmp(t_list **lst, char *str, t_pipe *c)
 {
-	t_list	*tmp3;
-	t_list	*tmp2;
-	t_list	*tmp;
-
-	tmp = lst;
-	tmp2 = tmp;
-	while (tmp)
+	c->tmpp = (*lst);
+	c->tmp2 = c->tmpp;
+	while (c->tmpp)
 	{
-		if (strncmp_orginal(tmp->content, str, len_till_equal(str)) == 0)
+		if (strncmp_orginal(c->tmpp->content, str, len_till_equal(str)) == 0)
 		{
-			tmp3 = tmp->next;
-			tmp2->next = tmp3;
-			free(tmp->content);
-			free(tmp);
+			if (c->tmp2->content == c->tmpp->content)
+				(*lst) = (*lst)->next;
+			else if (c->tmpp->next)
+			{
+				c->tmp3 = c->tmpp->next;
+				c->tmp2->next = c->tmp3;
+			}
+			else
+				c->tmp2->next = NULL;
+			free(c->tmpp->content);
+			free(c->tmpp);
 			return ;
 		}
-		tmp2 = tmp;
-		tmp = tmp->next;
+		c->tmp2 = c->tmpp;
+		c->tmpp = c->tmpp->next;
 	}
 }

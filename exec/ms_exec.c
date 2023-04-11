@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 19:40:39 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/07 02:43:30 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/10 23:02:32 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	check_other(t_cmds *p, t_pipe *c)
 		normal_exec(p, c);
 	else if (p->cmd_len > 1)
 		multiple_pipes(p, c);
-	
 	if (c->m_path)
 	{
 		free_strings(c->m_path);
@@ -100,66 +99,29 @@ int	check_for_redirction(t_cmds *p, t_pipe *c)
 
 void	normal_exec(t_cmds *p, t_pipe *c)
 {
-	int		i;
-	struct stat fs;
-
 	c->ch = 1;
+	c->i = 0;
 	if (!ft_strchr(p[0].cmd[0], '.') && ft_strchr(p[0].cmd[0], '/'))
 	{
-		if (stat(p[0].cmd[0], &fs) != 0)
-		{
-			perror("stat");
-			g_exit_code = 126;
+		if (check_if_file(p) == 1)
 			return ;
-		}
 	}
 	else if (ft_strchr(p[0].cmd[0], '.') && ft_strchr(p[0].cmd[0], '/'))
 	{
-		if (stat(p[0].cmd[0], &fs) != 0)
-		{
-			perror("stat");
-			g_exit_code = 127;
+		if (check_dir(p) == 1)
 			return ;
-		}
 	}
 	c->cmd_exec = check_command_existence(p[0].cmd[0], c->m_path);
-	i = fork();
-	if (i == 0)
+	c->i = fork();
+	if (c->i == 0)
 	{
 		if (p[0].red_len > 0)
 			output_red(p, c, c->cmd_exec);
 		if (!c->cmd_exec)
-		{
-			write(2, p[0].cmd[0], ft_strlen(p[0].cmd[0]));
-			if (p[0].cmd[0])
-				write(2, ": command not found\n", 21);
-			g_exit_code = 127;
-			free(c->cmd_exec);
-			free_and_exit(c, p);
-		}
+			error_in_exec(c, p);
 		else if (execve(c->cmd_exec, p[0].cmd, c->tmp_env) < 0)
-		{
-			perror("execve : is directory");
-			g_exit_code = 126;
-			free(c->cmd_exec);
-			free_and_exit(c, p);
-		}
+			execve_error(p, c);
 	}
-	int	status;
-	waitpid(i, &status, 0);
-	if (WIFEXITED(status))
-	{
-		g_exit_code = WEXITSTATUS(status);
-		// if (g_exit_code == 1)
-		// 	g_exit_code = 127;
-		// else
-		// 	g_exit_code = 0;
-	}
-	else if (WIFSIGNALED(status))
-	{
-		g_exit_code = WTERMSIG(status) + 128;
-	}
-	free(c->cmd_exec);
-	c->cmd_exec = NULL;
-	c->ch = 0;
+	waitpid(c->i, &c->status, 0);
+	exit_status(c);
 }

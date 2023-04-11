@@ -6,15 +6,14 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 19:45:28 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/07 02:56:52 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/11 00:26:47 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../minishell.h"
+#include "../minishell.h"
 
 int	builtins_pipes(t_cmds *p, t_pipe *c, int fd, int j)
 {
-	// printf("p = %s\n", p[j].cmd[0]);
 	if (p[j].cmd)
 	{
 		if (ft_strncmp(p[j].cmd[0], "exit", 4) == 0)
@@ -36,7 +35,6 @@ int	builtins_pipes(t_cmds *p, t_pipe *c, int fd, int j)
 				return (ft_env_p(p, c, fd), 0);
 		}
 	}
-	// printf("p = %s\n", p[j].cmd[0]);
 	return (1);
 }
 
@@ -55,16 +53,11 @@ int	input_check(t_cmds *p, t_pipe *c, int j)
 int	output_check(t_cmds *p, t_pipe *c, int j)
 {
 	c->i = 0;
-	while (c->j < p->cmd_len)
+	while (c->i < p[j].red_len)
 	{
-		c->i = 0;
-		while (c->i < p[j].red_len)
-		{
-			if (p[j].outs[c->i].flag == 1 || p[j].outs[c->i].flag == 2)
-				return (1);
-			c->i++;
-		}
-		j++;
+		if (p[j].outs[c->i].flag == 1 || p[j].outs[c->i].flag == 2)
+			return (1);
+		c->i++;
 	}
 	return (0);
 }

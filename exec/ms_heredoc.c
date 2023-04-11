@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:44:06 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 07:28:12 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/11 04:02:43 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,108 +34,107 @@ int	check_heredoc(t_cmds *p, t_pipe *c)
 	return (0);
 }
 
+static void	open_file(t_vars *v)
+{
+	v->tmp = open(v->m, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	if (v->tmp < 0)
+	{
+		printf("error\n");
+		exit(1);
+	}
+}
+
+void	break_condition(t_cmds *p, int i, t_vars *v)
+{
+	p[i].outs[v->k].flag = 0;
+	free(p[i].outs[v->k].file_name);
+	p[i].outs[v->k].file_name = ft_strdup(v->m);
+	free(v->q);
+}
+
+static void	init_heredoc(t_pipe *c, t_vars *v)
+{
+	c->fd1 = 0;
+	v->q = NULL;
+	v->m = "h";
+	v->k = 0;
+	v->tmp = 0;
+}
+
 int	exec_heredoc(t_cmds *p, t_pipe *c, int i)
 {
-	int		k;
-	int		tmp;
-	char	*line;
-	char	*m;
-	char	*q;
+	t_vars	v;
 
-	c->fd1 = 0;
-	q = NULL;
-	m = "h";
-	k = 0;
-	tmp = 0;
-	heredoc_len(c, p);
-	while (k < p[i].red_len)
+	init_heredoc(c, &v);
+	while (v.k < p[i].red_len)
 	{
-		if (p[i].outs[k].flag == 3)
+		if (p[i].outs[v.k].flag == 3)
 		{
-			tmp = open(m, O_RDWR | O_TRUNC | O_CREAT, 0644);
-			if (tmp < 0)
-			{
-				printf("error\n");
-				exit(1);
-			}
+			open_file(&v);
 			write(1, "> ", 2);
-			line = get_next_line(0);
+			v.line = get_next_line(0);
 			while (1)
 			{
-				q = ft_strjoin(p[i].outs[k].file_name, "\n");
-				if (ft_strcmp_heredoc(line, q) == 0)
-				{
-					p[i].outs[k].flag = 0;
-					free(p[i].outs[k].file_name);
-					p[i].outs[k].file_name = ft_strdup(m);
-					free(q);
-					break ;
-				}
-				ft_putstr_fd(line, tmp, 0);
-				write(1, "> ", 2);
-				free(line);
-				line = get_next_line(0);
-				free(q);
-				if (!line)
+				if (heredoc_exec(p, &v, i) == 1)
 					break ;
 			}
-			if (line)
-				free(line);
-			if (k == p[i].red_len - 1)
+			if (v.line)
+				free(v.line);
+			if (v.k == p[i].red_len - 1)
 				break ;
-			close(tmp);
+			close(v.tmp);
 		}
-		k++;
+		v.k++;
 	}
-	close(tmp);
+	close(v.tmp);
 	return (0);
 }
 
-void	heredoc_len(t_pipe *c, t_cmds *p)
-{
-	int	i;
-	int	j;
+// void	heredoc_len(t_pipe *c, t_cmds *p)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	j = 0;
-	c->heredoc_len = 0;
-	while (i < p->cmd_len)
-	{
-		j = 0;
-		while (j < p[i].red_len)
-		{
-			if (p[i].outs[j].flag == 3)
-				c->heredoc_len++;
-			j++;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	j = 0;
+// 	c->heredoc_len = 0;
+// 	while (i < p->cmd_len)
+// 	{
+// 		j = 0;
+// 		while (j < p[i].red_len)
+// 		{
+// 			if (p[i].outs[j].flag == 3)
+// 				c->heredoc_len++;
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
-int	heredoc_redierction(t_cmds *p, t_pipe *c, char *s)
-{
-	c->i = 0;
-	c->j = 0;
-	while (c->j < p->cmd_len)
-	{
-		c->i = 0;
-		while (c->i < p[c->j].red_len)
-		{
-			if (p[c->j].outs[c->i].flag == 3)
-			{
-				c->fd1 = open(s, O_RDONLY | O_CREAT, 0644);
-				if (c->fd1 < 0)
-				{
-					perror("no such file or dir\n");
-					free_and_exit(c, p);
-				}
-			}
-			if (p[c->j].outs[c->i + 1].flag != 0)
-				return (heredoc_condition(c->fd1));
-			c->i++;
-			close(c->fd1);
-		}
-		c->j++;
-	}
-	return (0);
-}
+// int	heredoc_redierction(t_cmds *p, t_pipe *c, char *s)
+// {
+// 	c->i = 0;
+// 	c->j = 0;
+// 	while (c->j < p->cmd_len)
+// 	{
+// 		c->i = 0;
+// 		while (c->i < p[c->j].red_len)
+// 		{
+// 			if (p[c->j].outs[c->i].flag == 3)
+// 			{
+// 				c->fd1 = open(s, O_RDONLY | O_CREAT, 0644);
+// 				if (c->fd1 < 0)
+// 				{
+// 					perror("no such file or dir\n");
+// 					free_and_exit(c, p);
+// 				}
+// 			}
+// 			if (p[c->j].outs[c->i + 1].flag != 0)
+// 				return (heredoc_condition(c->fd1));
+// 			c->i++;
+// 			close(c->fd1);
+// 		}
+// 		c->j++;
+// 	}
+// 	return (0);
+// }

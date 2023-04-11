@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 21:51:56 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/07 03:53:00 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/11 04:02:53 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ typedef struct s_vars
 {
 	int		i;
 	int		j;
+	int		c;
+	int		k;
+	int		f;
 	int		h;
 	int		d;
 	int		empty;
@@ -51,6 +54,10 @@ typedef struct s_vars
 	int		in_quotes;
 	int		pid;
 	char	*cmd_exec;
+	char	*m;
+	char	*q;
+	int		tmp;
+	char	*line;
 }	t_vars;
 
 enum e_types
@@ -106,6 +113,7 @@ typedef struct t_pipe
 	int			cr;
 	int			p_f1;
 	int			p_f2;
+	int			status;
 }	t_pipe;
 
 /***************      parse_tool          ****************/
@@ -142,7 +150,7 @@ void	ft_cd(t_cmds *p, int x, int y, t_pipe *c);
 void	ft_export(t_pipe *c, t_cmds *p, int i, int fd);
 void	ft_unset(t_cmds *p, int i, int fd, t_pipe *c);
 int		strncmp_orginal(const char *s1, const char *s2, unsigned int n);
-int		found_first(char **m_env, int k, t_pipe *p);
+int		found_first(char **m_env, t_pipe *p);
 void	fill_export_list(t_pipe *p);
 void	fill_tmp_env(t_pipe *c);
 int		check_builtin(t_cmds *p, t_pipe *c);
@@ -171,7 +179,7 @@ char	*env_index(int index, t_list *tmp);
 void	changing_the_env_v(t_cmds *p, int i, int j, t_pipe *c);
 void	free_list(t_list **lst);
 void	free_and_exit(t_pipe *c, t_cmds *p);
-void	unset_cmp(t_list *lst, char *str);
+void	unset_cmp(t_list **lst, char *str, t_pipe *c);
 void	multiple_pipes(t_cmds *p, t_pipe *c);
 void	closing_fds(t_pipe *c);
 void	update_env(t_pipe *c);
@@ -193,10 +201,10 @@ void	output_red(t_cmds *p, t_pipe *c, char *cmd);
 void	echo_new_line(t_cmds *p, int x, int y, t_pipe *c);
 void	echo_flag(t_cmds *p, int x, int y, t_pipe *c);
 int		heredoc_condition(int fd);
-void	sec_cmd(t_pipe *c, int i, int j);
+void	second_cmd(t_pipe *c, t_vars *v, t_cmds *p);
 void	close_first_pipe(t_cmds *p, t_pipe *c);
 void	close_second_pipe(t_pipe *c);
-void	third_cmd(t_cmds *p, t_pipe *c, int j);
+void	third2_cmd(t_pipe *c, t_cmds *p, t_vars *v);
 void	ft_exit(t_pipe *c, t_cmds *p);
 int		builtins_pipes(t_cmds *p, t_pipe *c, int fd, int j);
 void	update_pwd(t_pipe *c, char *str, char *p, int k);
@@ -212,4 +220,26 @@ void	ft_pwd_p(t_cmds *p, t_pipe *c, int pm);
 void	ft_env_p(t_cmds *p, t_pipe *c, int pm);
 void	check_and_exit(t_pipe *c);
 int		ft_strcmp_heredoc(char *s1, char *s2);
+void	print_error(int i, int j, t_cmds *p);
+void	error_in_exec(t_pipe *c, t_cmds *p);
+void	execve_error(t_cmds *p, t_pipe *c);
+void	exit_status(t_pipe *c);
+int		check_if_file(t_cmds *p);
+int		check_dir(t_cmds *p);
+void	export_add(t_pipe *c, int i, int j, t_cmds *p);
+int		env_count(t_pipe *c);
+void	init_export(t_vars *v, t_pipe *p);
+void	sixth_cmd(t_pipe *c, t_cmds *p, t_vars *v);
+void	closing_pipe(t_pipe *c, t_cmds *p, t_vars *v);
+void	first_cmd(t_pipe *c, t_cmds *p, t_vars *v);
+void	fourth_cmd(t_pipe *c, t_cmds *p, t_vars *v);
+void	fifth_cmd(t_pipe *c, t_cmds *p, t_vars *v);
+void	before_cmd(t_pipe *c, t_cmds *p, t_vars *v);
+void	exit_code_pipes(t_pipe *c);
+void	init1(t_vars *v, t_pipe *c);
+void	wait_pipes(t_vars *v, t_pipe *c, t_cmds *p);
+void	child_exit(t_cmds *p, int j, t_pipe *c);
+void	export_last(t_pipe *c, t_cmds *p, int j);
+int		heredoc_exec(t_cmds *p, t_vars *v, int i);
+void	break_condition(t_cmds *p, int i, t_vars *v);
 #endif

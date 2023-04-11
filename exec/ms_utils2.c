@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 02:36:08 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 04:37:13 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/11 01:23:41 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,87 +29,7 @@ void	get_env(t_pipe *p, char **envp)
 		i++;
 	}
 	p->env_count = i;
-	// printf("i = %d\n", i);
 }
-
-// void	ms_redirection(t_pipe *p)
-// {
-// 	int		i;
-// 	int		k;
-// 	int		pid;
-// 	char	**str;
-// 	char	*cmd;
-
-// 	i = cmd_index(p);
-// 	cmd = check_command_existence(p->args[0][i], p->m_path);
-// 	printf("args = %s\n", p->args[0][i]);
-// 	str = ft_split(p->args[0][i], ' ');
-// 	// printf("cmd = %s\n", cmd);
-// 	// printf("str = %s", str[1]);
-// 	// exit(0);
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		k = check_and_create(p, i);
-// 		k = open(p->args[0][check_and_create(p, i)], O_WRONLY, 0777);
-// 		dup2(k, STDOUT_FILENO);
-// 		if (execve(cmd, str, p->m_env) < 0)
-// 		{
-// 			printf("command not found :%s\n", p->args[0][0]);
-// 			return ;
-// 		}
-// 	}
-// 	wait(NULL);
-// }
-
-// int	cmd_index(t_pipe *p)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		k;
-
-// 	i = 0;
-// 	j = 0;
-// 	k = 0;
-// 	while (p->args[i])
-// 	{
-// 		j = 0;
-// 		while (p->args[i][j])
-// 		{
-// 			k = 0;
-// 			while (p->args[i][j][k])
-// 			{
-// 				if (p->args[i][j][k] == '>')
-// 					return (i);				
-// 				k++;
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	// printf("j = %d", j);
-// 	return (0);
-// }
-
-// int	check_and_create(t_pipe *p, int i)
-// {
-// 	int		fd;
-// 	int		x;
-
-// 	// i = 0;
-// 	x = 0;
-// 	i += 1;
-// 	// printf("%s\n", p->args[x][i]);
-// 	while (p->args[x][i])
-// 	{
-// 		if (p->args[x][i][0] != '>')
-// 			fd = open(p->args[x][i], O_RDWR | O_CREAT, 0777);
-// 		i++;
-// 	}
-// 	i -= 1;
-// 	// printf("%s\n", p->args[x][i]);
-// 	return (i);
-// }
 
 void	fill_export(t_pipe *c)
 {
@@ -124,7 +44,7 @@ void	fill_export(t_pipe *c)
 	fill_tmp_env(c);
 	while (tmp->next)
 	{
-		index = found_first(c->tmp_env, index, c);
+		index = found_first(c->tmp_env, c);
 		ft_lstadd_front(&c->m_export,
 			ft_lstnew(ft_strdup(env_index(index, c->m_env))));
 		c->tmp_env[index][0] = '0';
@@ -136,7 +56,7 @@ void	fill_export(t_pipe *c)
 	last_sorting(c);
 }
 
-static int	env_count(t_pipe *c)
+int	env_count(t_pipe *c)
 {
 	int		i;
 	t_list	*tmp;
@@ -173,11 +93,14 @@ void	update_env(t_pipe *c)
 	}
 	c->tmp_env[i] = NULL;
 	i = 0;
-// 	char **s = c->tmp_env;
-// 	while (s[i])
-// 	{
-// 		printf("%c   ", s[i][0]);
-// 		i++;
-// 	}
 }
 
+void	error_in_exec(t_pipe *c, t_cmds *p)
+{
+	write(2, p[0].cmd[0], ft_strlen(p[0].cmd[0]));
+	if (p[0].cmd[0])
+		write(2, ": command not found\n", 21);
+	g_exit_code = 127;
+	free(c->cmd_exec);
+	free_and_exit(c, p);
+}

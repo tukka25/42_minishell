@@ -6,15 +6,15 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 21:23:49 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/07 02:45:50 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/10 22:37:49 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../minishell.h"
+#include "../minishell.h"
 
 void	ft_echo_p(t_cmds *p, int x, int pm, t_pipe *c)
 {
-	int y;
+	int	y;
 
 	y = 1;
 	g_exit_code = 0;
@@ -29,11 +29,11 @@ void	ft_echo_p(t_cmds *p, int x, int pm, t_pipe *c)
 
 void	ft_pwd_p(t_cmds *p, t_pipe *c, int pm)
 {
+	char	*pwd;
+
 	(void)p;
 	(void)c;
 	(void)pm;
-	char	*pwd;
-
 	pwd = NULL;
 	pwd = getcwd(NULL, 1024);
 	if (pwd != NULL)
@@ -63,9 +63,9 @@ void	ft_env_p(t_cmds *p, t_pipe *c, int pm)
 
 void	ft_cd_p(t_cmds *p, int x, int pm, t_pipe *c)
 {
-	(void)pm;
 	int	y;
 
+	(void)pm;
 	y = 1;
 	update_pwd(c, getcwd(NULL, 1024), "OLDPWD", 1);
 	update_export(c, getcwd(NULL, 1024), "OLDPWD", 1);
@@ -75,7 +75,7 @@ void	ft_cd_p(t_cmds *p, int x, int pm, t_pipe *c)
 		g_exit_code = 1;
 	}
 	else
-		g_exit_code = 0;	
+		g_exit_code = 0;
 	update_pwd(c, getcwd(NULL, 1024), "PWD", 0);
 	update_export(c, getcwd(NULL, 1024), "PWD", 0);
 }
@@ -97,30 +97,4 @@ void	ft_export_p(t_pipe *c, t_cmds *p, int i, int fd)
 		}
 		g_exit_code = 0;
 	}
-}
-
-void	ft_unset_p(t_cmds *p, int i, int fd, t_pipe *c)
-{
-	int j;
-
-	j = 0;
-	(void)fd;
-	if (!p[i].cmd[j + 1])
-		return ;
-	j = 1;
-	while (p[i].cmd[j])
-	{
-		if (ft_isalpha_str(p[i].cmd[j]) == 0)
-		{
-			unset_cmp(c->m_env, p[i].cmd[j]);
-			unset_cmp(c->m_export, p[i].cmd[j]);
-		}
-		else
-		{
-			write(2, p[i].cmd[j], ft_strlen(p[i].cmd[j]));
-			write (2, " : not a valid identifier\n", 26);
-		}
-		j++;
-	}
-	c->env_count -= 1;
 }

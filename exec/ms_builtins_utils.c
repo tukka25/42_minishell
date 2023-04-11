@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 07:20:21 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/03/15 18:23:21 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/11 02:39:32 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,37 +30,38 @@ int	check_executable(t_pipe *c, t_cmds *p)
 	return (0);
 }
 
+static void	shlvl_exec(t_pipe *c, char *s)
+{
+	s = ft_itoa(increase_shlvl_value(c->tmpp->content));
+	c->tmp3 = ft_lstnew(ft_strjoin("SHLVL=", s));
+	c->tmp3->next = c->tmpp->next;
+	c->tmp2->next = c->tmp3;
+	free(c->tmpp->content);
+	free(c->tmpp);
+}
+
 void	change_shlv(t_cmds *p, t_pipe *c, t_list *lst)
 {
-	int		k;
 	char	*s;
-	t_list	*tmp;
-	t_list	*tmp2;
-	t_list	*tmp3;
 
-	k = 0;
+	c->k = 0;
 	s = NULL;
-	tmp = lst;
-	tmp2 = tmp;
-	tmp3 = NULL;
+	c->tmpp = lst;
+	c->tmp2 = c->tmpp;
+	c->tmp3 = NULL;
 	(void)p;
 	(void)c;
-	while (tmp)
+	while (c->tmpp)
 	{
-		if (strncmp_orginal(tmp->content, "SHLVL=",
+		if (strncmp_orginal(c->tmpp->content, "SHLVL=",
 				len_till_equal("SHLVL=")) == 0)
 		{
-			s = ft_itoa(increase_shlvl_value(tmp->content));
-			tmp3 = ft_lstnew(ft_strjoin("SHLVL=", s));
-			tmp3->next = tmp->next;
-			tmp2->next = tmp3;
-			free(tmp->content);
-			free(tmp);
+			shlvl_exec(c, s);
 			break ;
 		}
-		tmp2 = tmp;
-		tmp = tmp->next;
-		k++;
+		c->tmp2 = c->tmpp;
+		c->tmpp = c->tmpp->next;
+		c->k++;
 	}
 	if (s)
 		free(s);

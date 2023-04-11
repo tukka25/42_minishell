@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 20:14:04 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 05:56:46 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/11 01:26:07 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,9 @@ void	add_to_export(t_cmds *p, t_pipe *c, int i, int j)
 		while (c->tmpp)
 		{
 			if (strncmp_orginal(c->tmpp->content, p[0].cmd[j],
-				ft_strlen(c->tmpp->content)) > 0)
+					ft_strlen(c->tmpp->content)) > 0)
 			{
-				c->tmp2 = ft_lstnew(ft_strdup(p[0].cmd[j]));
-				c->tmp2->next = c->tmpp;
-				if (i != 0)
-					c->tmp3->next = c->tmp2;
-				c->env_count += 1;
-				ft_lstadd_back(&c->m_env, ft_lstnew(ft_strdup(p[0].cmd[j])));
-				if (i == 0)
-					c->m_export = c->tmp2;
+				export_add(c, i, j, p);
 				break ;
 			}
 			c->tmp3 = c->tmpp;
@@ -43,11 +36,7 @@ void	add_to_export(t_cmds *p, t_pipe *c, int i, int j)
 			i++;
 		}
 		if (!c->tmpp)
-		{
-			ft_lstadd_back(&c->m_export, ft_lstnew(ft_strdup(p[0].cmd[j])));
-			ft_lstadd_back(&c->m_env, ft_lstnew(ft_strdup(p[0].cmd[j])));
-			c->env_count += 1;
-		}
+			export_last(c, p, j);
 	}
 }
 
@@ -62,8 +51,10 @@ void	insert_the_node(t_cmds *p, t_pipe *c)
 	{
 		if (ft_strcmp(p[i].cmd[j], "=") != 0
 			&& ft_isexportable(p[i].cmd[j], len_till_equal(p[i].cmd[j])) == 0)
-				add_to_export(p, c, i, j);
-		else if (ft_isexportable(p[i].cmd[j], len_till_equal(p[i].cmd[j])) == 1 || ft_strcmp(p[i].cmd[j], "=") == 0)
+			add_to_export(p, c, i, j);
+		else if (ft_isexportable(p[i].cmd[j],
+				len_till_equal(p[i].cmd[j])) == 1
+			|| ft_strcmp(p[i].cmd[j], "=") == 0)
 		{
 			g_exit_code = 1;
 			write (2, p[i].cmd[j], ft_strlen(p[i].cmd[j]));

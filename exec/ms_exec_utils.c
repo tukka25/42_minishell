@@ -6,33 +6,36 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 16:20:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/06 02:47:27 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/10 23:47:31 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// char	**check_env_for_path(t_list *env)
-// {
-// 	int		i;
-// 	char	*s;
-// 	t_list	*tmp;
+void	ft_unset(t_cmds *p, int i, int fd, t_pipe *c)
+{
+	int	j;
 
-// 	i = 0;
-// 	s = NULL;
-// 	tmp = env;
-// 	while (tmp)
-// 	{
-// 		if (strncmp_orginal("PATH=", tmp->content, 5) == 0)
-// 		{
-// 			s = tmp->content + 5;
-// 			return (ft_split(s, ':'));
-// 		}
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	return (NULL);
-// }
+	j = 0;
+	(void)fd;
+	if (p->red_len > 0 && c->cr != 1)
+		check_exec_redirect(p, c, 0, 0);
+	if (!p[i].cmd[j + 1])
+		return ;
+	j = 1;
+	while (p[i].cmd[j])
+	{
+		if (ft_isalpha_str(p[i].cmd[j]) == 0)
+		{
+			unset_cmp(&c->m_env, p[i].cmd[j], c);
+			unset_cmp(&c->m_export, p[i].cmd[j], c);
+		}
+		else
+			print_error(i, j, p);
+		j++;
+	}
+	c->env_count -= 1;
+}
 
 char	*check_command_existence(char *av, char **path)
 {
