@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:44:06 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 04:02:43 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/24 19:05:36 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,31 @@ int	check_heredoc(t_cmds *p, t_pipe *c)
 	return (0);
 }
 
-static void	open_file(t_vars *v)
+static int	open_file(t_vars *v, t_pipe *c, t_cmds *p)
 {
+	v->m = create_file(c);
 	v->tmp = open(v->m, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (v->tmp < 0)
 	{
-		printf("error\n");
-		exit(1);
+		free(v->m);
+		c->d_t_m = c->d_t_m * 2 + 1;
+		v->m = create_file(c);
+		v->tmp = open(v->m, O_RDWR | O_TRUNC | O_CREAT, 0644);
+		if (v->tmp < 0)
+		{
+			free(v->m);
+			free_all(c, p);
+			return (1);
+		}
 	}
+	return (0);
 }
 
 void	break_condition(t_cmds *p, int i, t_vars *v)
 {
 	p[i].outs[v->k].flag = 0;
 	free(p[i].outs[v->k].file_name);
-	p[i].outs[v->k].file_name = ft_strdup(v->m);
+	p[i].outs[v->k].file_name = v->m;
 	free(v->q);
 }
 
@@ -56,7 +66,7 @@ static void	init_heredoc(t_pipe *c, t_vars *v)
 {
 	c->fd1 = 0;
 	v->q = NULL;
-	v->m = "h";
+	v->m = NULL;
 	v->k = 0;
 	v->tmp = 0;
 }
@@ -68,13 +78,15 @@ int	exec_heredoc(t_cmds *p, t_pipe *c, int i)
 	init_heredoc(c, &v);
 	while (v.k < p[i].red_len)
 	{
+		signal(SIGINT, SIG_IGN);
 		if (p[i].outs[v.k].flag == 3)
 		{
-			open_file(&v);
+			open_file(&v, c, p);
 			write(1, "> ", 2);
 			v.line = get_next_line(0);
 			while (1)
 			{
+				signal(SIGINT, SIG_IGN);
 				if (heredoc_exec(p, &v, i) == 1)
 					break ;
 			}

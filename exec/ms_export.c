@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:04:59 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 04:04:01 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:21:26 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,10 @@ void	changing_the_env_v(t_cmds *p, int i, int j, t_pipe *c)
 	}
 	if (c->tmp2->content != c->tmpp->content)
 		c->tmp2->next = c->tmp3;
-	// if (c->tmpp)
-	// {
-	// 	free(c->tmpp->content);
-	// 	free(c->tmpp);
-	// }
+	free(c->tmpp->content);
+	free(c->tmpp);
 	if (c->k == 0)
-		c->m_export = c->tmp3;
+		c->m_env = c->tmp3;
 }
 
 void	unset_cmp(t_list **lst, char *str, t_pipe *c)

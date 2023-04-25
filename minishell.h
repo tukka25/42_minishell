@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 21:51:56 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/11 04:02:53 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:33:43 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct t_pipe
 	int			p_f1;
 	int			p_f2;
 	int			status;
+	int			d_t_m;
 }	t_pipe;
 
 /***************      parse_tool          ****************/
@@ -242,4 +243,5 @@ void	child_exit(t_cmds *p, int j, t_pipe *c);
 void	export_last(t_pipe *c, t_cmds *p, int j);
 int		heredoc_exec(t_cmds *p, t_vars *v, int i);
 void	break_condition(t_cmds *p, int i, t_vars *v);
+char	*create_file(t_pipe *c);
 #endif

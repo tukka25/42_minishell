@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 03:58:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 04:03:07 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:38:56 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	heredoc_exec(t_cmds *p, t_vars *v, int i)
 {
+	signal(SIGINT, SIG_IGN);
 	v->q = ft_strjoin(p[i].outs[v->k].file_name, "\n");
 	if (ft_strcmp_heredoc(v->line, v->q) == 0)
 	{
@@ -28,4 +29,14 @@ int	heredoc_exec(t_cmds *p, t_vars *v, int i)
 	if (!v->line)
 		return (1);
 	return (0);
+}
+
+char	*create_file(t_pipe *c)
+{
+	char		*s;
+
+	c->d_t_m++;
+	s = ft_itoa(c->d_t_m);
+	c->d_t_m++;
+	return (s);
 }

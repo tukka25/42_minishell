@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 01:18:17 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/10 22:42:55 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:49:30 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	output_red(t_cmds *p, t_pipe *c, char *cmd)
 {
 	(void)cmd;
-	if (check_heredoc(p, c) == 1)
-		exec_heredoc(p, c, 0);
 	check_exec_redirect(p, c, 1, 0);
 }
 

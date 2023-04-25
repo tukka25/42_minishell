@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 16:20:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/10 23:47:31 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/25 12:45:35 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,22 +108,31 @@ char	*backslash_case(char *av, int i)
 
 void	last_sorting(t_pipe *p)
 {
-	t_list	*tmp;
 	char	*str;
 
-	tmp = p->m_export;
-	while (tmp)
+	p->i = 0;
+	p->j = 0;
+	str = NULL;
+	while (p->i < p->env_count - 1)
 	{
-		if (tmp->next)
+		p->j = 0;
+		while (p->j < p->env_count - 1 - p->i)
 		{
-			if (strncmp_orginal(tmp->content, tmp->next->content,
-					len_till_equal(tmp->content)) > 0)
+			if (strncmp_orginal(p->tmp_env[p->j], p->tmp_env[p->j + 1],
+					len_till_equal(p->tmp_env[p->j])) > 0)
 			{
-				str = tmp->content;
-				tmp->content = tmp->next->content;
-				tmp->next->content = str;
+				str = p->tmp_env[p->j];
+				p->tmp_env[p->j] = p->tmp_env[p->j + 1];
+				p->tmp_env[p->j + 1] = str;
 			}
+			p->j++;
 		}
-		tmp = tmp->next;
+		p->i++;
+	}
+	p->i = 0;
+	while (p->tmp_env[p->i])
+	{
+		ft_lstadd_back(&p->m_export, ft_lstnew(ft_strdup(p->tmp_env[p->i])));
+		p->i++;
 	}
 }

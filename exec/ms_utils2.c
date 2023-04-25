@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 02:36:08 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 01:23:41 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/25 12:38:12 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,26 @@ void	get_env(t_pipe *p, char **envp)
 
 void	fill_export(t_pipe *c)
 {
-	int		i;
-	t_list	*tmp;
-	int		index;
+	// int		i;
+	// t_list	*tmp;
+	// int		index;
 
-	i = 0;
+	// i = 0;
 	c->m_export = NULL;
-	tmp = c->m_env;
-	index = c->env_count;
+	// tmp = c->m_env;
+	// index = c->env_count;
 	fill_tmp_env(c);
-	while (tmp->next)
-	{
-		index = found_first(c->tmp_env, c);
-		ft_lstadd_front(&c->m_export,
-			ft_lstnew(ft_strdup(env_index(index, c->m_env))));
-		c->tmp_env[index][0] = '0';
-		tmp = tmp->next;
-		if (!tmp)
-			break ;
-		i++;
-	}
+	// while (tmp->next)
+	// {
+	// 	index = found_first(c->tmp_env, c);
+	// 	ft_lstadd_front(&c->m_export,
+	// 		ft_lstnew(ft_strdup(env_index(index, c->m_env))));
+	// 	c->tmp_env[index][0] = '0';
+	// 	tmp = tmp->next;
+	// 	if (!tmp)
+	// 		break ;
+	// 	i++;
+	// }
 	last_sorting(c);
 }
 
