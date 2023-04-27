@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 21:51:56 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/27 19:35:42 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 20:30:40 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,9 +244,10 @@ void	init1(t_vars *v, t_pipe *c);
 void	wait_pipes(t_vars *v, t_pipe *c, t_cmds *p);
 void	child_exit(t_cmds *p, int j, t_pipe *c, int fd);
 void	export_last(t_pipe *c, t_cmds *p, int j);
-int		heredoc_exec(t_cmds *p, t_vars *v, int i);
+int		heredoc_exec(t_cmds *p, t_vars *v, int i, t_pipe *c);
 void	break_condition(t_cmds *p, int i, t_vars *v);
 char	*create_file(t_pipe *c);
 int		exit_exit_code(t_cmds *p);
 int		check_exit(t_cmds *p, int k);
+void	loop_heredoc(t_pipe *c, t_cmds *p, t_vars *v, int i);
 #endif

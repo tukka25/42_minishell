@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:44:06 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 20:03:43 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 20:31:45 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,15 @@ int	exec_heredoc(t_cmds *p, t_pipe *c, int i)
 	{
 		if (p[i].outs[v.k].flag == 3)
 		{
+			signal(SIGINT, SIG_IGN);
 			if (open_file(&v, c, p) == 1)
 				return (0);
 			write(1, "> ", 2);
 			v.line = get_next_line(0);
-			while (1)
-				if (heredoc_exec(p, &v, i) == 1)
-					break ;
-			if (v.line)
-				free(v.line);
+			if (!v.line)
+				return (free(v.m), close(v.tmp), 1);
+			dollar_expansion(&v.line, c);
+			loop_heredoc(c, p, &v, i);
 			if (v.k == p[i].red_len - 1)
 				break ;
 			if (v.tmp > 2)
