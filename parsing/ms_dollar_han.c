@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_dollar_han.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mradwan <mradwan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 17:11:33 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/07 04:13:31 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/06 19:32:27 by mradwan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,31 +82,8 @@ int	expand(char **str, char *expanded, t_vars *var)
 	return (0);
 }
 
-void	generate_strings_helper(char **str, char *expanded, t_vars *var)
-{
-	char	*joined;
-	char	*joined2;
-
-	if (!var->in_d_quotes)
-	{
-		joined = ft_strjoin(expanded, "\"");
-		joined2 = ft_strjoin("\"", joined);
-		*str = storing(*str, var->i - var->len - 1, var->len + 1, joined2);
-		var->i += ft_strlen(expanded) - var->len - 1;
-		free(joined2);
-		free(joined);
-	}
-	else
-	{
-		*str = storing(*str, var->i - var->len - 1, var->len + 1, expanded);
-		var->i += ft_strlen(expanded) - var->len - 1;
-	}
-}
-
 int	generate_string(char **str, char **tmp, t_vars *var, t_pipe *pipe)
 {
-	// char	*joined;
-	// char	*joined2;
 	char	*expanded;
 
 	expanded = NULL;
@@ -115,27 +92,13 @@ int	generate_string(char **str, char **tmp, t_vars *var, t_pipe *pipe)
 		expanded = my_getenv(*tmp, pipe);
 		if (expanded)
 		{
-			generate_strings_helper(str, expanded, var);
-			// if (!var->in_d_quotes)
-			// {
-			// 	joined = ft_strjoin(expanded, "\"");
-			// 	joined2 = ft_strjoin("\"", joined);
-			// 	*str = storing(*str, var->i - var->len - 1, var->len + 1, joined2);
-			// 	var->i += ft_strlen(expanded) - var->len - 1;
-			// 	free(joined2);
-			// 	free(joined);
-			// }
-			// else
-			// {
-			// 	*str = storing(*str, var->i - var->len - 1, var->len + 1, expanded);
-			// 	var->i += ft_strlen(expanded) - var->len - 1;
-			// }
+			*str = storing(*str, var->i - var->len - 1, var->len + 1, expanded);
+			var->i += ft_strlen(expanded) - var->len - 1;
 		}
 		else if (!expanded)
 		{
 			*str = storing(*str, var->i - var->len - 1, var->len + 1, "");
 			var->i -= var->len + 1;
-			g_exit_code = 127;
 		}
 		free(*tmp);
 		return (1);

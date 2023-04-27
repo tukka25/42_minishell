@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 21:51:56 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/27 11:55:22 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:35:42 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void	free_all(t_pipe *pipe, t_cmds *cmd);
 
 /***************      quotes_parse        ****************/
 void	clean_quotes(char *str);
+void	handle_sigint(int sig);
 void	files_saving(t_pipe *pipe, t_cmds **tmp);
 
 /***************      exec_part       ****************/
@@ -246,4 +247,6 @@ void	export_last(t_pipe *c, t_cmds *p, int j);
 int		heredoc_exec(t_cmds *p, t_vars *v, int i);
 void	break_condition(t_cmds *p, int i, t_vars *v);
 char	*create_file(t_pipe *c);
+int		exit_exit_code(t_cmds *p);
+int		check_exit(t_cmds *p, int k);
 #endif

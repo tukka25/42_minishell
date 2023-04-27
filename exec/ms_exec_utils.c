@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 16:20:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/25 12:45:35 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:22:45 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,6 @@ void	last_sorting(t_pipe *p)
 			}
 			p->j++;
 		}
-		p->i++;
-	}
-	p->i = 0;
-	while (p->tmp_env[p->i])
-	{
-		ft_lstadd_back(&p->m_export, ft_lstnew(ft_strdup(p->tmp_env[p->i])));
 		p->i++;
 	}
 }

@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 15:11:21 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/27 18:24:12 by abdamoha         ###   ########.fr       */
+/*   Created: 2023/04/27 19:31:26 by abdamoha          #+#    #+#             */
+/*   Updated: 2023/04/27 19:35:51 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int	exit_exit_code(t_cmds *p)
 {
-	t_list	*tmp;
-
-	if (!lst)
-		return ;
-	if (!*lst)
+	if (p[0].cmd[2] != NULL)
 	{
-		*lst = new;
-		return ;
+		g_exit_code = 1;
+		write(2, "too many arguments\n", 19);
+		return (0);
 	}
-	tmp = *lst;
-	while (tmp->next != NULL)
+	if (check_exit(p, 0) == 0 || check_exit(p, 1) == 1)
 	{
-		tmp = tmp->next;
+		write(2, " numeric argument required\n", 28);
+		g_exit_code = 255;
 	}
-	tmp->next = new;
+	else if (p[0].cmd[1])
+		g_exit_code = ft_atoi(p[0].cmd[1]) % 256;
+	return (1);
 }

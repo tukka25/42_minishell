@@ -6,11 +6,11 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 20:44:33 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/03 20:45:43 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:47:33 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "libft.h"
+#include "libft.h"
 
 // int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 // {
@@ -44,18 +44,6 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-// static int	cut_nl(const char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!str)
-// 		return (0);
-// 	while (str[i] && str[i] != '\n')
-// 		i++;
-// 	return (i);
-// }
-
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t			i;
@@ -70,14 +58,13 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (1);
 	ns1 = (unsigned char *)s1;
 	ns2 = (unsigned char *)s2;
-	i = 0;
+	i = -1;
 	c = ft_strlen(s1) - 1;
 	k = ft_strlen(s2) - 1;
-	while (i < n && c >= 0 && k >= 0)
+	while (++i < n && c >= 0 && k >= 0)
 	{
 		if (ns1[c] != ns2[k])
 			return (ns1[c] - ns2[k]);
-		i++;
 		c--;
 		k--;
 	}
@@ -85,4 +72,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (ns1[c] - ns2[c]);
 	return (0);
 }
-

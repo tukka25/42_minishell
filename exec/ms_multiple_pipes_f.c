@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 00:58:21 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 17:55:59 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:23:46 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,10 @@ void	child_exit(t_cmds *p, int j, t_pipe *c, int fd)
 	g_exit_code = 127;
 	write(2, p[j].cmd[0], ft_strlen(p[j].cmd[0]));
 	write(2, ": command not found\n", 21);
-	// if (fd > 0)
-	// {
-	// 	ft_putnbr_fd(g_exit_code, fd);
-	// 	close(fd);
-	// }
+	if (fd > 0)
+	{
+		ft_putnbr_fd(g_exit_code, fd);
+		close(fd);
+	}
 	free_and_exit(c, p);
 }

@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:00:16 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 18:03:38 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:38:48 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void	third2_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 		write(2, p[v->j].cmd[0], ft_strlen(p[v->j].cmd[0]));
 		write(2, ": command not found\n", 21);
 		free(c->cmd_exec);
-		// g_exit_code = 126;
-		// ft_putnbr_fd(g_exit_code, v->e_fd);
+		g_exit_code = 126;
+		ft_putnbr_fd(g_exit_code, v->e_fd);
 		close(v->e_fd);
 		free_and_exit(c, p);
 	}		
@@ -138,9 +138,7 @@ void	multiple_pipes(t_cmds *p, t_pipe *c)
 			pipe(c->fd[1]);
 		}
 		if (check_heredoc(p, c) == 1)
-		{
 			exec_heredoc(p, c, v.j);
-		}
 		c->pid = fork();
 		before_cmd(c, p, &v);
 		closing_pipe(c, p, &v);

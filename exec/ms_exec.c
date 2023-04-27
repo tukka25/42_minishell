@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 19:40:39 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/25 14:33:22 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:21:48 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,12 @@ void	normal_exec(t_cmds *p, t_pipe *c)
 	c->i = 0;
 	if (!ft_strchr(p[0].cmd[0], '.') && ft_strchr(p[0].cmd[0], '/'))
 	{
-		printf("here");
 		if (check_if_file(p) == 1)
 			return ;
 	}
 	else if (ft_strchr(p[0].cmd[0], '.') && ft_strchr(p[0].cmd[0], '/'))
-	{
 		if (check_dir(p) == 1)
 			return ;
-	}
 	if (check_heredoc(p, c) == 1)
 		exec_heredoc(p, c, 0);
 	c->cmd_exec = check_command_existence(p[0].cmd[0], c->m_path);

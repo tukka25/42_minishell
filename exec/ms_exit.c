@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 18:03:59 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 12:22:03 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:35:26 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_and_exit_2(t_pipe *c, t_cmds *p)
 	close(c->fdin);
 }
 
-static int	check_exit(t_cmds *p, int k)
+int	check_exit(t_cmds *p, int k)
 {
 	int	i;
 
@@ -89,19 +89,8 @@ void	ft_exit(t_pipe *c, t_cmds *p)
 {
 	if (p[0].cmd[1])
 	{
-		if (p[0].cmd[2] != NULL)
-		{
-			g_exit_code = 1;
-			write(2, "too many arguments\n", 19);
+		if (exit_exit_code(p) == 0)
 			return ;
-		}
-		if (check_exit(p, 0) == 0 || check_exit(p, 1) == 1)
-		{
-			write(2, " numeric argument required\n", 28);
-			g_exit_code = 255;
-		}
-		else if (p[0].cmd[1])
-			g_exit_code = ft_atoi(p[0].cmd[1]) % 256;
 	}
 	if (c->m_env)
 		free_list(&c->m_env);
