@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:00:16 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 19:38:48 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 20:05:43 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	first_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 {
+	close(v->e_fd);
 	if (p[v->j].red_len > 0)
 		check_exec_redirect(p, c, 1, v->j);
 	else

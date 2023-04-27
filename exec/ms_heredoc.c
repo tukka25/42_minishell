@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:44:06 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 19:38:02 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 20:03:43 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void	init_heredoc(t_pipe *c, t_vars *v)
 	v->q = NULL;
 	v->m = NULL;
 	v->k = -1;
+	c->d_t_m = 0;
 	v->tmp = 0;
 }
 

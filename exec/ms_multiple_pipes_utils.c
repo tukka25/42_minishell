@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 23:46:46 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 11:51:21 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 20:02:14 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	ft_unset_p(t_cmds *p, int i, int fd, t_pipe *c)
 void	sixth_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 {
 	closing_fds(c);
+	close(v->e_fd);
 	if (builtins_pipes(p, c, c->fd[0][1], v->j) == 0)
 		free_and_exit(c, p);
 	c->cmd_exec = check_command_existence(p[v->j].cmd[0], c->m_path);
