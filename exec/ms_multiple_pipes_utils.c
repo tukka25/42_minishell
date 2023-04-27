@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 23:46:46 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 01:25:25 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:51:21 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	sixth_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 		free_and_exit(c, p);
 	c->cmd_exec = check_command_existence(p[v->j].cmd[0], c->m_path);
 	if (!c->cmd_exec)
-		child_exit(p, v->j, c);
+		child_exit(p, v->j, c, 0);
 	if (execve(c->cmd_exec, p[v->j].cmd, NULL) < 0)
 	{
 		write(2, p[v->j].cmd[0], ft_strlen(p[v->j].cmd[0]));

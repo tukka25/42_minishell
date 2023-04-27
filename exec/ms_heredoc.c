@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:44:06 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/24 19:05:36 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:11:41 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,31 +74,37 @@ static void	init_heredoc(t_pipe *c, t_vars *v)
 int	exec_heredoc(t_cmds *p, t_pipe *c, int i)
 {
 	t_vars	v;
+	int		k;
 
+	k = 0;
 	init_heredoc(c, &v);
 	while (v.k < p[i].red_len)
 	{
-		signal(SIGINT, SIG_IGN);
 		if (p[i].outs[v.k].flag == 3)
 		{
-			open_file(&v, c, p);
+			if (open_file(&v, c, p) == 1)
+			{
+				return (0);
+			}
 			write(1, "> ", 2);
 			v.line = get_next_line(0);
 			while (1)
 			{
-				signal(SIGINT, SIG_IGN);
 				if (heredoc_exec(p, &v, i) == 1)
 					break ;
+				k++;
 			}
 			if (v.line)
 				free(v.line);
 			if (v.k == p[i].red_len - 1)
 				break ;
-			close(v.tmp);
+			if (v.tmp > 2)
+				close(v.tmp);
 		}
 		v.k++;
 	}
-	close(v.tmp);
+	if (v.tmp > 2)
+		close(v.tmp);
 	return (0);
 }
 

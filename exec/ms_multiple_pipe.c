@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:00:16 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 01:21:05 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:03:38 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	first_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 	close(c->fd[0][0]);
 	c->cmd_exec = check_command_existence(p[v->j].cmd[0], c->m_path);
 	if (!c->cmd_exec)
-		child_exit(p, v->j, c);
+		child_exit(p, v->j, c, 0);
 	if (execve(c->cmd_exec, p[v->j].cmd, NULL) < 0)
 	{
 		write(2, p[v->j].cmd[0], ft_strlen(p[v->j].cmd[0]));
@@ -74,7 +74,7 @@ void	third2_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 		free_and_exit(c, p);
 	c->cmd_exec = check_command_existence(p[v->j].cmd[0], c->m_path);
 	if (!c->cmd_exec)
-		child_exit(p, v->j, c);
+		child_exit(p, v->j, c, v->e_fd);
 	else
 	{
 		close(c->fdin);
@@ -82,11 +82,12 @@ void	third2_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 	}
 	if (execve(c->cmd_exec, p[v->j].cmd, NULL) < 0)
 	{
-		ft_putstr_fd("f\n", 2, 1);
 		write(2, p[v->j].cmd[0], ft_strlen(p[v->j].cmd[0]));
 		write(2, ": command not found\n", 21);
 		free(c->cmd_exec);
-		g_exit_code = 126;
+		// g_exit_code = 126;
+		// ft_putnbr_fd(g_exit_code, v->e_fd);
+		close(v->e_fd);
 		free_and_exit(c, p);
 	}		
 }
@@ -106,7 +107,7 @@ void	fourth_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 	{
 		if (input_check(p, c, v->j) == 0)
 			dup2(c->fd[0][0], STDIN_FILENO);
-		if (input_check(p, c, v->j) == 0)
+		if (output_check(p, c, v->j) == 0)
 		{
 			if (dup2(c->fd[1][1], STDOUT_FILENO) == -1)
 			{
@@ -137,7 +138,9 @@ void	multiple_pipes(t_cmds *p, t_pipe *c)
 			pipe(c->fd[1]);
 		}
 		if (check_heredoc(p, c) == 1)
+		{
 			exec_heredoc(p, c, v.j);
+		}
 		c->pid = fork();
 		before_cmd(c, p, &v);
 		closing_pipe(c, p, &v);

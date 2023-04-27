@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 21:12:58 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 01:12:45 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:12:37 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ void	wait_pipes(t_vars *v, t_pipe *c, t_cmds *p)
 	while (v->h < p->cmd_len)
 	{
 		wait(&c->status);
-		exit_code_pipes(c);
+		if (v->h == p->cmd_len - 1)
+			exit_code_pipes(c, v);
 		v->h++;
 	}
 	c->cr = 0;

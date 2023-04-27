@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 20:14:04 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/11 01:26:07 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 12:52:13 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	check_for_flag(char *str)
 
 	i = 0;
 	j = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '-' || str[i] == 'n')

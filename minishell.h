@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 21:51:56 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/24 17:33:43 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:55:22 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_vars
 	char	*q;
 	int		tmp;
 	char	*line;
+	int		e_fd;
+	char	*e_f;
 }	t_vars;
 
 enum e_types
@@ -236,10 +238,10 @@ void	first_cmd(t_pipe *c, t_cmds *p, t_vars *v);
 void	fourth_cmd(t_pipe *c, t_cmds *p, t_vars *v);
 void	fifth_cmd(t_pipe *c, t_cmds *p, t_vars *v);
 void	before_cmd(t_pipe *c, t_cmds *p, t_vars *v);
-void	exit_code_pipes(t_pipe *c);
+void	exit_code_pipes(t_pipe *c, t_vars *v);
 void	init1(t_vars *v, t_pipe *c);
 void	wait_pipes(t_vars *v, t_pipe *c, t_cmds *p);
-void	child_exit(t_cmds *p, int j, t_pipe *c);
+void	child_exit(t_cmds *p, int j, t_pipe *c, int fd);
 void	export_last(t_pipe *c, t_cmds *p, int j);
 int		heredoc_exec(t_cmds *p, t_vars *v, int i);
 void	break_condition(t_cmds *p, int i, t_vars *v);
