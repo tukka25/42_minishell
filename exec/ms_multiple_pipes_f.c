@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 00:58:21 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 18:23:46 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:05:12 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	init1(t_vars *v, t_pipe *c)
 	v->d = 0;
 	c->cmd_exec = NULL;
 	c->cr = 1;
-	v->e_fd = open(v->e_f, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (v->e_fd < 0)
+	c->e_fd = open(v->e_f, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (c->e_fd < 0)
 	{
 		printf("error\n");
 	}
@@ -78,7 +78,7 @@ void	exit_code_pipes(t_pipe *c, t_vars *v)
 
 	(void)c;
 	s = NULL;
-	close(v->e_fd);
+	close(c->e_fd);
 	fd = open(v->e_f, O_RDONLY);
 	if (fd < 0)
 	{
@@ -97,14 +97,13 @@ void	exit_code_pipes(t_pipe *c, t_vars *v)
 
 void	child_exit(t_cmds *p, int j, t_pipe *c, int fd)
 {
-	(void)fd;
 	g_exit_code = 127;
 	write(2, p[j].cmd[0], ft_strlen(p[j].cmd[0]));
 	write(2, ": command not found\n", 21);
 	if (fd > 0)
 	{
 		ft_putnbr_fd(g_exit_code, fd);
-		close(fd);
 	}
+	close(fd);
 	free_and_exit(c, p);
 }

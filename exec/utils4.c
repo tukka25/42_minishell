@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 19:31:26 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 20:32:10 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:05:27 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ void	loop_heredoc(t_pipe *c, t_cmds *p, t_vars *v, int i)
 			break ;
 	if (v->line)
 		free(v->line);
+}
+
+void	last_exit_e(t_vars *v, t_cmds *p, t_pipe *c)
+{
+	(void)v;
+	close(c->e_fd);
+	free_and_exit(c, p);
 }

@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:00:16 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 20:05:43 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:04:43 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	first_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 {
-	close(v->e_fd);
+	close(c->e_fd);
 	if (p[v->j].red_len > 0)
 		check_exec_redirect(p, c, 1, v->j);
 	else
@@ -72,10 +72,10 @@ void	third2_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 		check_exec_redirect(p, c, 1, v->j);
 	second_cmd(c, v, p);
 	if (builtins_pipes(p, c, 1, v->j) == 0)
-		free_and_exit(c, p);
+		last_exit_e(v, p, c);
 	c->cmd_exec = check_command_existence(p[v->j].cmd[0], c->m_path);
 	if (!c->cmd_exec)
-		child_exit(p, v->j, c, v->e_fd);
+		child_exit(p, v->j, c, c->e_fd);
 	else
 	{
 		close(c->fdin);
@@ -87,8 +87,8 @@ void	third2_cmd(t_pipe *c, t_cmds *p, t_vars *v)
 		write(2, ": command not found\n", 21);
 		free(c->cmd_exec);
 		g_exit_code = 126;
-		ft_putnbr_fd(g_exit_code, v->e_fd);
-		close(v->e_fd);
+		ft_putnbr_fd(g_exit_code, c->e_fd);
+		close(c->e_fd);
 		free_and_exit(c, p);
 	}		
 }

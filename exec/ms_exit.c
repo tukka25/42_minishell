@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 18:03:59 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 19:35:26 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:06:34 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	free_list(t_list **lst)
 
 void	free_and_exit(t_pipe *c, t_cmds *p)
 {
+	if (c->e_fd > 2)
+		close(c->e_fd);
 	if (c->m_env)
 		free_list(&c->m_env);
 	if (c->m_export)

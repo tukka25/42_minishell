@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 03:58:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2023/04/27 20:28:14 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:08:19 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	heredoc_exec(t_cmds *p, t_vars *v, int i, t_pipe *c)
 	dollar_expansion(&v->line, c);
 	free(v->q);
 	if (!v->line)
-		return (1);
+		return (free(v->m), 1);
 	return (0);
 }
 

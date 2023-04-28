@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 21:51:56 by mradwan           #+#    #+#             */
-/*   Updated: 2023/04/27 20:30:40 by abdamoha         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:03:53 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ typedef struct s_vars
 	char	*q;
 	int		tmp;
 	char	*line;
-	int		e_fd;
 	char	*e_f;
 }	t_vars;
 
@@ -117,6 +116,7 @@ typedef struct t_pipe
 	int			p_f2;
 	int			status;
 	int			d_t_m;
+	int			e_fd;
 }	t_pipe;
 
 /***************      parse_tool          ****************/
@@ -250,4 +250,5 @@ char	*create_file(t_pipe *c);
 int		exit_exit_code(t_cmds *p);
 int		check_exit(t_cmds *p, int k);
 void	loop_heredoc(t_pipe *c, t_cmds *p, t_vars *v, int i);
+void	last_exit_e(t_vars *v, t_cmds *p, t_pipe *c);
 #endif
